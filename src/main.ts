@@ -1,20 +1,18 @@
-// src/main.ts
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  
+  // Validação global
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  
+  // CORS habilitado para o frontend
+  app.enableCors({
+    origin: 'http://localhost:3000', // Next.js default
+  });
 
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true },
-    }),
-  );
-
-  await app.listen(3000);
+  await app.listen(3001);
 }
 bootstrap();
