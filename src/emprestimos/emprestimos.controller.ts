@@ -1,21 +1,19 @@
-// src/emprestimos/emprestimos.controller.ts
-import { Controller, Post, Get, Body } from '@nestjs/common';
-import { EmprestimosService } from './emprestimos.service';
-import { CriarEmprestimoDto } from './dto/criar-emprestimo.dto';
-import type { Emprestimo } from './emprestimos.entity';
+import { CriarEmprestimoDto } from "./dto/criar-emprestimo.dto";
+import { Emprestimo } from "./emprestimos.entity";
+import { EmprestimosService } from "./emprestimos.service";
 
 
 @Controller('emprestimos')
 export class EmprestimosController {
-  constructor(private readonly emprestimosService: EmprestimosService) {}
+  constructor(private readonly emprestimos: EmprestimosService) {}
 
   @Post()
-  solicitarEmprestimo(@Body() dados: CriarEmprestimoDto): Emprestimo {
-    return this.emprestimosService.solicitar(dados);
+  async solicitar(@Body() dto: CriarEmprestimoDto): Promise<Emprestimo> {
+    return this.emprestimos.solicitar(dto);
   }
 
   @Get()
-  listarEmprestimos(): Emprestimo[] {
-    return this.emprestimosService.listar();
+  listar(): Emprestimo[] {
+    return this.emprestimos.listar();
   }
 }
